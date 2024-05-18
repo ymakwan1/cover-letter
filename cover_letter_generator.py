@@ -2,6 +2,7 @@ import os
 from docx import Document
 from docx.shared import Pt
 from dotenv import load_dotenv
+from docx2pdf import convert
 
 # Load environment variables from .env file
 load_dotenv()
@@ -41,11 +42,15 @@ def generate_cover_letter(position: str, company: str) -> None:
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
 
-    # Save the modified document
-    output_path = os.path.join(output_dir, f"cover_letter_{company}_{position}.docx")
-    doc.save(output_path)
+    # Save the modified document as DOC
+    doc_path = os.path.join(output_dir, f"cover_letter_{company}_{position}.docx")
+    doc.save(doc_path)
 
-    print(f"Cover letter generated and saved as: {output_path}")
+    # Convert the Word document to PDF
+    pdf_path = os.path.join(output_dir, f"cover_letter_{company}_{position}.pdf")
+    convert(doc_path, pdf_path)
+
+    print(f"Cover letter generated and saved as: {pdf_path}")
 
 if __name__ == "__main__":
     position: str = input("Enter the desired position for the cover letter: ")
